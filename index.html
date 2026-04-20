@@ -1,0 +1,1007 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8965A;
+    --gold-light: #E8C07A;
+    --gold-dark: #8B6340;
+    --cream: #FAF7F0;
+    --dark: #1A1207;
+    --dark2: #2D1F0A;
+    --text-main: #2D1F0A;
+    --text-muted: #7A6040;
+    --card-bg: #FFFDF7;
+    --border: rgba(200,150,90,0.2);
+    --nav-bg: rgba(26,18,7,0.95);
+    --accent: #8B3A3A;
+  }
+  [data-theme="dark"] {
+    --cream: #1A1207;
+    --card-bg: #2D1F0A;
+    --text-main: #F5EDD8;
+    --text-muted: #C8A870;
+    --border: rgba(200,150,90,0.3);
+    --nav-bg: rgba(10,7,2,0.97);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--text-main);
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+  }
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: var(--nav-bg);
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 0 2rem;
+    height: 60px;
+    border-bottom: 1px solid rgba(200,150,90,0.25);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  .logo span { color: #fff; font-size:0.7rem; display:block; letter-spacing:4px; font-family:'Tajawal',sans-serif; opacity:0.6; }
+  .nav-links {
+    display: flex; gap:0; list-style:none;
+  }
+  .nav-links li a {
+    color: rgba(255,255,255,0.7);
+    text-decoration:none;
+    font-size:0.82rem;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    padding: 0 1.1rem;
+    height:60px;
+    display:flex; align-items:center;
+    transition: color 0.2s, background 0.2s;
+    border-bottom: 2px solid transparent;
+    cursor:pointer;
+  }
+  .nav-links li a:hover, .nav-links li a.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: rgba(200,150,90,0.06);
+  }
+  .nav-right { display:flex; align-items:center; gap:0.7rem; }
+  .icon-btn {
+    background: none; border:1px solid rgba(200,150,90,0.3);
+    color: var(--gold); border-radius:50%;
+    width:34px; height:34px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem; transition: background 0.2s;
+  }
+  .icon-btn:hover { background: rgba(200,150,90,0.15); }
+
+  /* SECTIONS */
+  section { display:none; padding-top:60px; min-height:100vh; }
+  section.active { display:block; }
+
+  /* HERO */
+  .hero {
+    position: relative; overflow:hidden;
+    min-height: 100vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center;
+    background: linear-gradient(160deg, #1A1207 0%, #2D1F0A 40%, #3D2810 100%);
+  }
+  .hero-pattern {
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(45deg, rgba(200,150,90,0.04) 0, rgba(200,150,90,0.04) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+  .hero-ornament {
+    width:200px; height:2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1rem auto;
+  }
+  .hero-badge {
+    font-size:0.7rem; letter-spacing:5px; text-transform:uppercase;
+    color: var(--gold); opacity:0.8; margin-bottom:1.5rem;
+  }
+  .hero h1 {
+    font-family:'Playfair Display', serif;
+    font-size: clamp(2.5rem,6vw,5rem);
+    color:#fff;
+    line-height:1.1;
+  }
+  .hero h1 em { color:var(--gold); font-style:italic; }
+  .hero p {
+    color:rgba(255,255,255,0.55);
+    font-size:1.05rem; max-width:480px;
+    line-height:1.8; margin: 1.5rem auto;
+  }
+  .hero-cta {
+    display:flex; gap:1rem; margin-top:1rem; flex-wrap:wrap; justify-content:center;
+  }
+  .btn-gold {
+    background: var(--gold); color:#1A1207;
+    border:none; padding:0.75rem 2rem; border-radius:2px;
+    font-size:0.82rem; letter-spacing:2px; text-transform:uppercase;
+    cursor:pointer; font-family:'Tajawal',sans-serif; font-weight:500;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-gold:hover { background:var(--gold-light); transform:translateY(-1px); }
+  .btn-outline {
+    background:none; color:rgba(255,255,255,0.8);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:0.75rem 2rem; border-radius:2px;
+    font-size:0.82rem; letter-spacing:2px; text-transform:uppercase;
+    cursor:pointer; font-family:'Tajawal',sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* 3D CARDS */
+  .dress-3d {
+    perspective:800px; width:100%;
+  }
+  .dress-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .dress-3d:hover .dress-inner { transform: rotateY(8deg) rotateX(-4deg) scale(1.03); }
+
+  /* COLLECTION */
+  .collection-header {
+    text-align:center; padding:4rem 2rem 2rem;
+  }
+  .section-eyebrow {
+    font-size:0.7rem; letter-spacing:5px; text-transform:uppercase;
+    color:var(--gold); margin-bottom:0.7rem;
+  }
+  .section-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.8rem,4vw,3rem);
+    line-height:1.2;
+  }
+  .section-title em { color:var(--gold); font-style:italic; }
+  .divider {
+    width:60px; height:1px;
+    background:var(--gold); margin:1.2rem auto;
+    opacity:0.5;
+  }
+  .collection-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+    gap:1.5rem; padding:1rem 2rem 4rem;
+    max-width:1200px; margin:0 auto;
+  }
+  .dress-card {
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:2px;
+    overflow:hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor:pointer;
+  }
+  .dress-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,0.12); }
+  .dress-visual {
+    width:100%; height:320px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .badge-new {
+    position:absolute; top:12px; left:12px;
+    background:var(--gold); color:#1A1207;
+    font-size:0.6rem; letter-spacing:2px; text-transform:uppercase;
+    padding:3px 10px; border-radius:1px;
+  }
+  .dress-info { padding:1.2rem 1.5rem 1.5rem; }
+  .dress-name {
+    font-family:'Playfair Display',serif;
+    font-size:1.1rem; margin-bottom:0.3rem;
+  }
+  .dress-origin {
+    font-size:0.75rem; color:var(--text-muted);
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:0.8rem;
+  }
+  .dress-price {
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .price-dzd {
+    font-size:1.3rem; font-weight:500; color:var(--gold);
+  }
+  .price-dzd span { font-size:0.75rem; font-weight:300; opacity:0.7; }
+  .add-btn {
+    background:none; border:1px solid var(--border);
+    color:var(--text-main); padding:0.4rem 1rem;
+    border-radius:1px; cursor:pointer; font-size:0.75rem;
+    letter-spacing:1px; text-transform:uppercase;
+    font-family:'Tajawal',sans-serif;
+    transition:background 0.2s, border-color 0.2s;
+  }
+  .add-btn:hover { background:var(--gold); border-color:var(--gold); color:#1A1207; }
+
+  /* SVG DRESSES */
+  .dress-svg { width:100%; height:100%; }
+
+  /* FILTER */
+  .filter-bar {
+    display:flex; gap:0.5rem; justify-content:center;
+    flex-wrap:wrap; margin-bottom:1rem; padding:0 2rem;
+  }
+  .filter-btn {
+    background:none; border:1px solid var(--border);
+    color:var(--text-muted); padding:0.4rem 1.2rem; border-radius:1px;
+    cursor:pointer; font-size:0.75rem; letter-spacing:1.5px; text-transform:uppercase;
+    font-family:'Tajawal',sans-serif; transition:all 0.2s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background:var(--gold); border-color:var(--gold); color:#1A1207;
+  }
+
+  /* INFO */
+  .info-section { padding: 4rem 2rem; max-width:900px; margin:0 auto; }
+  .info-header { text-align:center; margin-bottom:3rem; }
+  .contact-grid {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:1.5rem;
+  }
+  .contact-card {
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:2px; padding:2rem 1.5rem; text-align:center;
+  }
+  .contact-icon {
+    width:50px; height:50px; margin:0 auto 1rem;
+    border-radius:50%; background:rgba(200,150,90,0.1);
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+  }
+  .contact-card h3 { font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:0.5rem; }
+  .contact-card a { color:var(--gold); text-decoration:none; font-size:0.9rem; }
+  .contact-card p { color:var(--text-muted); font-size:0.85rem; line-height:1.6; }
+  .hours-table { width:100%; margin-top:1.5rem; border-collapse:collapse; }
+  .hours-table td { padding:0.5rem 0; font-size:0.85rem; border-bottom:1px solid var(--border); }
+  .hours-table td:last-child { text-align:right; color:var(--gold); }
+
+  /* BLOG */
+  .blog-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr));
+    gap:1.5rem; padding:0 2rem 4rem; max-width:1200px; margin:0 auto;
+  }
+  .blog-card {
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:2px; overflow:hidden; cursor:pointer;
+    transition: transform 0.3s;
+  }
+  .blog-card:hover { transform:translateY(-4px); }
+  .blog-thumb {
+    width:100%; height:200px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .blog-body { padding:1.5rem; }
+  .blog-tag {
+    font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+    color:var(--gold); margin-bottom:0.6rem;
+  }
+  .blog-card h3 { font-family:'Playfair Display',serif; font-size:1.1rem; line-height:1.4; margin-bottom:0.6rem; }
+  .blog-card p { font-size:0.85rem; color:var(--text-muted); line-height:1.7; }
+  .blog-meta { display:flex; justify-content:space-between; margin-top:1rem; font-size:0.75rem; color:var(--text-muted); }
+
+  /* SETTINGS */
+  .settings-section { padding:4rem 2rem; max-width:700px; margin:0 auto; }
+  .settings-header { margin-bottom:2.5rem; }
+  .settings-group {
+    background:var(--card-bg); border:1px solid var(--border);
+    border-radius:2px; margin-bottom:1rem; overflow:hidden;
+  }
+  .settings-group-title {
+    padding:0.9rem 1.5rem; font-size:0.7rem; letter-spacing:3px;
+    text-transform:uppercase; color:var(--gold);
+    border-bottom:1px solid var(--border);
+    background:rgba(200,150,90,0.04);
+  }
+  .settings-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem 1.5rem; border-bottom:1px solid var(--border);
+  }
+  .settings-row:last-child { border-bottom:none; }
+  .settings-row label { font-size:0.88rem; }
+  .settings-row small { display:block; color:var(--text-muted); font-size:0.75rem; margin-top:2px; }
+  .toggle {
+    position:relative; width:44px; height:24px;
+    background:rgba(200,150,90,0.2); border-radius:12px; cursor:pointer;
+    transition:background 0.2s; border:none; flex-shrink:0;
+  }
+  .toggle::after {
+    content:''; position:absolute; top:3px; left:3px;
+    width:18px; height:18px; border-radius:50%;
+    background:#fff; transition:transform 0.2s;
+  }
+  .toggle.on { background:var(--gold); }
+  .toggle.on::after { transform:translateX(20px); }
+  .lang-select {
+    background:var(--card-bg); border:1px solid var(--border);
+    color:var(--text-main); padding:0.4rem 0.8rem; border-radius:1px;
+    font-family:'Tajawal',sans-serif; font-size:0.85rem; cursor:pointer;
+  }
+  .size-select { width:120px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    background:var(--card-bg); max-width:650px; width:90%;
+    max-height:85vh; overflow-y:auto; border-radius:2px;
+    border:1px solid var(--border); position:relative;
+  }
+  .modal-close {
+    position:absolute; top:1rem; right:1rem;
+    background:none; border:none; color:var(--text-muted);
+    font-size:1.2rem; cursor:pointer; z-index:1;
+  }
+  .modal-body { display:grid; grid-template-columns:1fr 1fr; }
+  .modal-visual { height:380px; display:flex; align-items:center; justify-content:center; }
+  .modal-info { padding:2rem; display:flex; flex-direction:column; justify-content:center; }
+  .modal-name { font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:0.4rem; }
+  .modal-price { font-size:1.6rem; color:var(--gold); margin-bottom:1rem; }
+  .modal-price span { font-size:0.8rem; opacity:0.7; }
+  .modal-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.8; margin-bottom:1.5rem; }
+  .size-picker { margin-bottom:1.2rem; }
+  .size-picker p { font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.5rem; color:var(--text-muted); }
+  .sizes { display:flex; gap:0.5rem; flex-wrap:wrap; }
+  .size-tag {
+    border:1px solid var(--border); padding:0.25rem 0.6rem;
+    font-size:0.8rem; cursor:pointer; border-radius:1px;
+    transition:all 0.15s;
+  }
+  .size-tag.active { border-color:var(--gold); color:var(--gold); }
+
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:2rem; right:2rem; z-index:300;
+    background:#1A1207; color:var(--gold);
+    padding:0.8rem 1.5rem; border-radius:2px;
+    border-left:3px solid var(--gold);
+    font-size:0.85rem; letter-spacing:1px;
+    transform:translateX(200%); transition:transform 0.3s;
+  }
+  .toast.show { transform:translateX(0); }
+
+  @media(max-width:600px){
+    .nav-links { display:none; }
+    .modal-body { grid-template-columns:1fr; }
+    .modal-visual { height:250px; }
+    .hero h1 { font-size:2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showSection('hero')">
+    Atelier Fella
+    <span>Haute Couture Algérienne</span>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showSection('collection')" class="nav-link" data-section="collection">Collection</a></li>
+    <li><a onclick="showSection('blog')" class="nav-link" data-section="blog">Blog</a></li>
+    <li><a onclick="showSection('info')" class="nav-link" data-section="info">Contact</a></li>
+    <li><a onclick="showSection('settings')" class="nav-link" data-section="settings">⚙ Paramètres</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="icon-btn" title="Rechercher" onclick="showSection('collection')">🔍</button>
+    <button class="icon-btn" title="Panier" id="cart-btn">🛍</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="active">
+  <div class="hero">
+    <div class="hero-pattern"></div>
+    <div style="position:relative;z-index:1;padding:2rem;">
+      <p class="hero-badge">✦ Alger, Algérie · Depuis 2010 ✦</p>
+      <div class="hero-ornament"></div>
+      <h1>La beauté de<br>la femme <em>algérienne</em></h1>
+      <div class="hero-ornament"></div>
+      <p>Karakou, Kaftan, Robes Kabyles — des créations sur mesure brodées à la main, pour chaque cérémonie de votre vie.</p>
+      <div class="hero-cta">
+        <button class="btn-gold" onclick="showSection('collection')">Voir la Collection</button>
+        <button class="btn-outline" onclick="showSection('info')">Prendre RDV</button>
+      </div>
+    </div>
+  </div>
+  <!-- Features strip -->
+  <div style="background:var(--card-bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); max-width:900px; margin:0 auto; text-align:center; padding:0;">
+      <div style="padding:1.8rem 1rem; border-right:1px solid var(--border);">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem;">✂</div>
+        <p style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">Sur Mesure</p>
+      </div>
+      <div style="padding:1.8rem 1rem; border-right:1px solid var(--border);">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem;">✦</div>
+        <p style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">Broderie Main</p>
+      </div>
+      <div style="padding:1.8rem 1rem; border-right:1px solid var(--border);">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem;">🇩🇿</div>
+        <p style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">100% Algérien</p>
+      </div>
+      <div style="padding:1.8rem 1rem;">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem;">💎</div>
+        <p style="font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">Livraison Nationale</p>
+      </div>
+    </div>
+  </div>
+  <!-- Testimonials -->
+  <div style="padding:4rem 2rem; text-align:center; max-width:800px; margin:0 auto;">
+    <p class="section-eyebrow">Témoignages</p>
+    <h2 class="section-title">Elles nous font <em>confiance</em></h2>
+    <div class="divider"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem;">
+      <div style="background:var(--card-bg);border:1px solid var(--border);padding:1.5rem;border-radius:2px;text-align:left;">
+        <p style="color:var(--gold);margin-bottom:0.5rem;">★★★★★</p>
+        <p style="font-size:0.85rem;line-height:1.7;color:var(--text-muted);">"Mon karakou était parfait, exactement comme je le souhaitais. Toute la famille était émerveillée."</p>
+        <p style="margin-top:1rem;font-size:0.75rem;font-weight:500;">— Nadia, Alger</p>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border);padding:1.5rem;border-radius:2px;text-align:left;">
+        <p style="color:var(--gold);margin-bottom:0.5rem;">★★★★★</p>
+        <p style="font-size:0.85rem;line-height:1.7;color:var(--text-muted);">"La robe kabyle de ma fille était magnifique. La broderie artisanale est d'une qualité exceptionnelle."</p>
+        <p style="margin-top:1rem;font-size:0.75rem;font-weight:500;">— Yasmine, Tizi Ouzou</p>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border);padding:1.5rem;border-radius:2px;text-align:left;">
+        <p style="color:var(--gold);margin-bottom:0.5rem;">★★★★★</p>
+        <p style="font-size:0.85rem;line-height:1.7;color:var(--text-muted);">"Le kaftan sur mesure était livré à temps pour le mariage. Je le recommande vivement !"</p>
+        <p style="margin-top:1rem;font-size:0.75rem;font-weight:500;">— Amira, Constantine</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTION -->
+<section id="collection">
+  <div class="collection-header">
+    <p class="section-eyebrow">✦ Haute Couture Algérienne</p>
+    <h2 class="section-title">Top <em>Collection</em></h2>
+    <div class="divider"></div>
+    <p style="color:var(--text-muted);font-size:0.9rem;max-width:500px;margin:0 auto;">Nos créations les plus recherchées, toutes réalisées sur mesure à Alger.</p>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterDresses('all',this)">Tout</button>
+    <button class="filter-btn" onclick="filterDresses('karakou',this)">Karakou</button>
+    <button class="filter-btn" onclick="filterDresses('kaftan',this)">Kaftan</button>
+    <button class="filter-btn" onclick="filterDresses('kabyle',this)">Kabyle</button>
+    <button class="filter-btn" onclick="filterDresses('sahraoui',this)">Sahraoui</button>
+  </div>
+  <div class="collection-grid" id="dress-grid"></div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="collection-header">
+    <p class="section-eyebrow">✦ Inspirations & Conseils</p>
+    <h2 class="section-title">Notre <em>Blog</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="blog-grid" id="blog-grid"></div>
+</section>
+
+<!-- INFO / CONTACT -->
+<section id="info">
+  <div class="info-section">
+    <div class="info-header">
+      <p class="section-eyebrow">✦ Nous retrouver</p>
+      <h2 class="section-title">Informations & <em>Contact</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h3>Téléphone</h3>
+        <a href="tel:+213555123456">+213 555 123 456</a>
+        <p style="margin-top:0.5rem;">Disponible 9h–18h<br>Samedi inclus</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📸</div>
+        <h3>Instagram</h3>
+        <a href="#" target="_blank">@atelier_fella_dz</a>
+        <p style="margin-top:0.5rem;">Suivez nos créations et coulisses de l'atelier</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📘</div>
+        <h3>Facebook</h3>
+        <a href="#" target="_blank">Atelier Fella Haute Couture</a>
+        <p style="margin-top:0.5rem;">Rejoignez notre page pour les nouveautés</p>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <h3>Adresse</h3>
+        <p>Rue des Artisans, Kouba<br>Alger, Algérie</p>
+        <a href="#" style="display:block;margin-top:0.5rem;font-size:0.8rem;">→ Voir sur la carte</a>
+      </div>
+    </div>
+    <!-- Hours -->
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:2px;padding:2rem;margin-top:1.5rem;">
+      <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem;">Horaires d'ouverture</h3>
+      <table class="hours-table">
+        <tr><td>Dimanche – Jeudi</td><td>09:00 – 18:00</td></tr>
+        <tr><td>Samedi</td><td>10:00 – 16:00</td></tr>
+        <tr><td>Vendredi</td><td style="color:var(--accent);">Fermé</td></tr>
+      </table>
+    </div>
+    <!-- Appointment -->
+    <div style="background:linear-gradient(135deg,#2D1F0A,#3D2810);border:1px solid rgba(200,150,90,0.3);border-radius:2px;padding:2rem;margin-top:1.5rem;text-align:center;">
+      <h3 style="font-family:'Playfair Display',serif;color:#fff;margin-bottom:0.8rem;">Prendre un Rendez-vous</h3>
+      <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:1.2rem;">Consultation gratuite pour votre création sur mesure</p>
+      <a href="tel:+213555123456"><button class="btn-gold">Appeler Maintenant</button></a>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings">
+  <div class="settings-section">
+    <div class="settings-header">
+      <p class="section-eyebrow">✦ Préférences</p>
+      <h2 class="section-title">Paramètres du <em>Site</em></h2>
+      <div class="divider" style="margin:1rem 0;"></div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Apparence</div>
+      <div class="settings-row">
+        <div>
+          <label>Mode Sombre</label>
+          <small>Basculer entre le thème clair et sombre</small>
+        </div>
+        <button class="toggle" id="dark-toggle" onclick="toggleDark()"></button>
+      </div>
+      <div class="settings-row">
+        <div>
+          <label>Animations</label>
+          <small>Activer les effets de transition</small>
+        </div>
+        <button class="toggle on" id="anim-toggle" onclick="this.classList.toggle('on')"></button>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Langue</div>
+      <div class="settings-row">
+        <div>
+          <label>Langue du site</label>
+          <small>Choisissez votre langue préférée</small>
+        </div>
+        <select class="lang-select" onchange="changeLang(this.value)">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇩🇿 العربية</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <div>
+          <label>Devise</label>
+          <small>Affichage des prix</small>
+        </div>
+        <select class="lang-select">
+          <option>DZD – Dinar Algérien</option>
+          <option>EUR – Euro</option>
+          <option>USD – Dollar</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Notifications</div>
+      <div class="settings-row">
+        <div>
+          <label>Nouveautés Collection</label>
+          <small>Recevoir les alertes de nouvelles créations</small>
+        </div>
+        <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+      </div>
+      <div class="settings-row">
+        <div>
+          <label>Promotions & Offres</label>
+          <small>Soldes et réductions exclusives</small>
+        </div>
+        <button class="toggle" onclick="this.classList.toggle('on')"></button>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">Tailles par défaut</div>
+      <div class="settings-row">
+        <div>
+          <label>Ma taille habituelle</label>
+          <small>Pré-sélectionnée dans les fiches produits</small>
+        </div>
+        <select class="lang-select size-select">
+          <option>XS (36)</option>
+          <option>S (38)</option>
+          <option selected>M (40)</option>
+          <option>L (42)</option>
+          <option>XL (44)</option>
+          <option>XXL (46)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const dresses = [
+  {
+    id:1, cat:'karakou', name:'Karakou Royal', origin:'Alger',
+    price:'85 000', new:true, color1:'#1A0A2E', color2:'#8B3A8B', trim:'#C8965A',
+    desc:'Le Karakou est la robe de cérémonie par excellence de la femme algéroise. Brodé en fil doré, ce modèle en velours prune est orné de motifs traditionnels faits à la main.',
+    sizes:['36','38','40','42','44'],
+    draw: (colors) => karaku(colors)
+  },
+  {
+    id:2, cat:'kaftan', name:'Kaftan Doré', origin:'Oran',
+    price:'65 000', new:false, color1:'#1A0F00', color2:'#8B6340', trim:'#FFD700',
+    desc:'Kaftan luxueux en soie naturelle, brodé de motifs arabesques dorés. Idéal pour les fêtes et mariages. Disponible sur mesure.',
+    sizes:['38','40','42','44'],
+    draw: (colors) => kaftan(colors)
+  },
+  {
+    id:3, cat:'kabyle', name:'Robe Kabyle Tradition', origin:'Kabylie',
+    price:'45 000', new:true, color1:'#0A1F2E', color2:'#1A5F8B', trim:'#E8C07A',
+    desc:'La robe kabyle traditionnelle, ornée de sa parure en argent et ses motifs berbères authentiques. Symbole de fierté et d\'élégance amazighe.',
+    sizes:['36','38','40','42'],
+    draw: (colors) => kabyle(colors)
+  },
+  {
+    id:4, cat:'sahraoui', name:'M\'laya Sahraoui', origin:'Tamanrasset',
+    price:'55 000', new:false, color1:'#1A0808', color2:'#8B1A1A', trim:'#FFD700',
+    desc:'La M\'laya, longue robe d\'inspiration saharienne en tissu fluide. Broderies géométriques dorées sur fond rouge passion.',
+    sizes:['38','40','42','44','46'],
+    draw: (colors) => mlaya(colors)
+  },
+  {
+    id:5, cat:'karakou', name:'Karakou Émeraude', origin:'Alger',
+    price:'92 000', new:true, color1:'#0A1F0A', color2:'#1A6B3A', trim:'#FFD700',
+    desc:'Une version contemporaine du Karakou classique, en velours émeraude avec broderies argentées et dorées mélangées.',
+    sizes:['36','38','40','42'],
+    draw: (colors) => karaku(colors)
+  },
+  {
+    id:6, cat:'kaftan', name:'Kaftan Nuit Bleue', origin:'Constantine',
+    price:'66888', new:false, color1:'#0A0A2E', color2:'#1A1A6B', trim:'#C8965A',
+    desc:'Kaftan en velours bleu nuit, orné de passementeries dorées et de broderies de style mauresque. Un chef-d\'œuvre de l\'artisanat algérien.',
+    sizes:['38','40','42'],
+    draw: (colors) => kaftan(colors)
+  },
+];
+
+const blogs = [
+  { tag:'Conseils Style', title:'Comment choisir son Karakou pour son mariage?', date:'12 Mars 2025', read:'5 min', excerpt:'Le karakou est la robe de cérémonie incontournable pour la mariée algéroise. Voici nos conseils pour choisir la couleur, la broderie et la coupe parfaite.', color:'#1A0A2E', accent:'#8B3A8B' },
+  { tag:'Tendances 2025', title:'Les nouvelles couleurs de la saison printanière', date:'28 Fév 2025', read:'3 min', excerpt:'Cette saison, les tons pastels et les dégradés délicats s\'invitent dans la mode traditionnelle algérienne. Découvrez les teintes tendances.', color:'#0A1F2E', accent:'#1A5F8B' },
+  { tag:'Artisanat', title:'L\'art de la broderie au fil d\'or: heritage vivant', date:'15 Janv 2025', read:'7 min', excerpt:'Rencontre avec les brodeuses de l\'atelier qui perpétuent le savoir-faire ancestral de la broderie algérienne à la main, point par point.', color:'#1A0F00', accent:'#8B6340' },
+  { tag:'Guide Tailles', title:'Prendre ses mesures pour une robe sur mesure', date:'5 Janv 2025', read:'4 min', excerpt:'Nous vous guidons pas à pas pour prendre correctement vos mesures et obtenir une création parfaitement ajustée à votre silhouette.', color:'#0A1A0A', accent:'#1A6B3A' },
+  { tag:'Cérémonies', title:'Tenues traditionnelles pour chaque région d\'Algérie', date:'20 Déc 2024', read:'8 min', excerpt:'De la robe kabyle à la M\'laya saharienne, chaque région d\'Algérie possède ses tenues de cérémonie uniques. Tour d\'horizon.', color:'#1A0808', accent:'#8B1A1A' },
+  { tag:'Entretien', title:'Comment entretenir vos broderies en fil d\'or?', date:'10 Déc 2024', read:'3 min', excerpt:'Les broderies précieuses de vos robes traditionnelles méritent des soins particuliers. Voici nos conseils d\'entretien pour les préserver.', color:'#1A1200', accent:'#6B5A00' },
+];
+
+let cart = 0;
+
+function karaku(c) {
+  return `<svg viewBox="0 0 200 300" class="dress-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="k${c.id}bg" cx="50%" cy="30%" r="60%">
+        <stop offset="0%" stop-color="${c.color2}" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="${c.color1}"/>
+      </radialGradient>
+    </defs>
+    <!-- Body -->
+    <path d="M70 60 Q65 80 55 140 Q45 200 50 280 L150 280 Q155 200 145 140 Q135 80 130 60 Z" fill="url(#k${c.id}bg)"/>
+    <!-- Vest overlay -->
+    <path d="M80 60 Q78 90 75 130 L125 130 Q122 90 120 60 Z" fill="${c.color2}" opacity="0.8"/>
+    <!-- Collar -->
+    <path d="M85 60 Q90 55 100 52 Q110 55 115 60 Q105 65 100 63 Q95 65 85 60 Z" fill="${c.trim}" opacity="0.9"/>
+    <!-- Gold trim vest -->
+    <path d="M80 62 Q78 90 75 130 M120 62 Q122 90 125 130" stroke="${c.trim}" stroke-width="1.5" fill="none" opacity="0.8"/>
+    <!-- Broderie motifs on vest -->
+    <g opacity="0.9">
+      <circle cx="100" cy="80" r="3" fill="${c.trim}"/>
+      <path d="M93 80 Q100 72 107 80 Q100 88 93 80 Z" stroke="${c.trim}" stroke-width="0.8" fill="none"/>
+      <circle cx="100" cy="95" r="2" fill="${c.trim}"/>
+      <path d="M95 95 Q100 89 105 95 Q100 101 95 95 Z" stroke="${c.trim}" stroke-width="0.8" fill="none"/>
+      <circle cx="100" cy="108" r="2" fill="${c.trim}"/>
+      <path d="M96 108 Q100 103 104 108 Q100 113 96 108 Z" stroke="${c.trim}" stroke-width="0.8" fill="none"/>
+    </g>
+    <!-- Side broderie -->
+    <g opacity="0.6">
+      <path d="M60 150 Q65 145 70 150 Q65 155 60 150" stroke="${c.trim}" stroke-width="1" fill="${c.trim}" opacity="0.7"/>
+      <path d="M130 150 Q135 145 140 150 Q135 155 130 150" stroke="${c.trim}" stroke-width="1" fill="${c.trim}" opacity="0.7"/>
+      <path d="M57 165 Q63 158 68 165 Q63 172 57 165" stroke="${c.trim}" stroke-width="1" fill="${c.trim}" opacity="0.5"/>
+      <path d="M132 165 Q137 158 143 165 Q137 172 132 165" stroke="${c.trim}" stroke-width="1" fill="${c.trim}" opacity="0.5"/>
+    </g>
+    <!-- Hem trim -->
+    <path d="M50 270 Q100 265 150 270" stroke="${c.trim}" stroke-width="2" fill="none" opacity="0.8"/>
+    <path d="M52 275 Q100 270 148 275" stroke="${c.trim}" stroke-width="1" fill="none" opacity="0.5"/>
+    <!-- Skirt pattern -->
+    <g opacity="0.3">
+      <line x1="75" y1="140" x2="70" y2="270" stroke="${c.trim}" stroke-width="0.5"/>
+      <line x1="100" y1="130" x2="100" y2="270" stroke="${c.trim}" stroke-width="0.5"/>
+      <line x1="125" y1="140" x2="130" y2="270" stroke="${c.trim}" stroke-width="0.5"/>
+    </g>
+  </svg>`;
+}
+
+function kaftan(c) {
+  return `<svg viewBox="0 0 200 300" class="dress-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="kf${c.id}bg" cx="50%" cy="20%" r="70%">
+        <stop offset="0%" stop-color="${c.color2}" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="${c.color1}"/>
+      </radialGradient>
+    </defs>
+    <!-- Wide Kaftan body -->
+    <path d="M60 50 Q50 70 40 120 Q30 180 35 280 L165 280 Q170 180 160 120 Q150 70 140 50 Z" fill="url(#kf${c.id}bg)"/>
+    <!-- Neckline V -->
+    <path d="M85 50 Q100 75 115 50" stroke="${c.trim}" stroke-width="2" fill="none"/>
+    <path d="M88 50 Q100 70 112 50" stroke="${c.trim}" stroke-width="0.8" fill="none" opacity="0.5"/>
+    <!-- Center seam with gold -->
+    <line x1="100" y1="75" x2="100" y2="275" stroke="${c.trim}" stroke-width="1.5" opacity="0.4"/>
+    <!-- Geometric border motifs -->
+    <g stroke="${c.trim}" stroke-width="0.8" fill="none" opacity="0.8">
+      <rect x="88" y="95" width="24" height="24" transform="rotate(45,100,107)"/>
+      <rect x="91" y="98" width="18" height="18" transform="rotate(45,100,107)"/>
+      <circle cx="100" cy="107" r="4" fill="${c.trim}"/>
+    </g>
+    <!-- Arabesque motifs sides -->
+    <g opacity="0.5">
+      <path d="M50 160 Q55 150 60 160 Q65 170 60 175 Q55 170 50 160Z" fill="${c.trim}"/>
+      <path d="M140 160 Q145 150 150 160 Q155 170 150 175 Q145 170 140 160Z" fill="${c.trim}"/>
+      <path d="M48 185 Q54 176 59 185 Q64 194 59 198Q54 194 48 185Z" fill="${c.trim}" opacity="0.7"/>
+      <path d="M141 185 Q146 176 152 185 Q157 194 152 198 Q146 194 141 185Z" fill="${c.trim}" opacity="0.7"/>
+    </g>
+    <!-- Hem decoration -->
+    <path d="M35 260 Q100 252 165 260" stroke="${c.trim}" stroke-width="2.5" fill="none"/>
+    <path d="M37 268 Q100 260 163 268" stroke="${c.trim}" stroke-width="1" fill="none" opacity="0.6"/>
+    <!-- Waist belt suggestion -->
+    <path d="M48 145 Q100 140 152 145" stroke="${c.trim}" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M47 150 Q100 145 153 150" stroke="${c.trim}" stroke-width="0.7" fill="none" opacity="0.4"/>
+  </svg>`;
+}
+
+function kabyle(c) {
+  return `<svg viewBox="0 0 200 300" class="dress-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="kb${c.id}bg" cx="50%" cy="25%" r="65%">
+        <stop offset="0%" stop-color="${c.color2}" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="${c.color1}"/>
+      </radialGradient>
+    </defs>
+    <!-- Robe body -->
+    <path d="M65 45 Q60 80 55 150 Q48 220 50 280 L150 280 Q152 220 145 150 Q140 80 135 45 Z" fill="url(#kb${c.id}bg)"/>
+    <!-- White underlayer suggestion -->
+    <path d="M70 45 Q68 80 65 140 L135 140 Q132 80 130 45 Z" fill="white" opacity="0.08"/>
+    <!-- Traditional silver/gold jewelry band collar -->
+    <rect x="82" y="40" width="36" height="8" rx="4" fill="${c.trim}" opacity="0.85"/>
+    <rect x="87" y="39" width="26" height="3" rx="1" fill="${c.trim}" opacity="0.5"/>
+    <!-- Fibule / brooch patterns -->
+    <g fill="${c.trim}" opacity="0.9">
+      <circle cx="90" cy="70" r="5"/>
+      <circle cx="90" cy="70" r="2.5" fill="${c.color1}"/>
+      <circle cx="110" cy="70" r="5"/>
+      <circle cx="110" cy="70" r="2.5" fill="${c.color1}"/>
+      <!-- Connecting chain -->
+      <line x1="95" y1="70" x2="105" y2="70" stroke="${c.trim}" stroke-width="1.5" fill="none"/>
+    </g>
+    <!-- Tifinagh-inspired geometric border on bodice -->
+    <g stroke="${c.trim}" stroke-width="1" fill="none" opacity="0.7">
+      <line x1="70" y1="90" x2="130" y2="90"/>
+      <path d="M75 85 L80 75 L85 85"/>
+      <path d="M90 85 L95 75 L100 85"/>
+      <path d="M105 85 L110 75 L115 85"/>
+      <path d="M120 85 L125 75 L130 85"/>
+      <line x1="70" y1="75" x2="130" y2="75"/>
+    </g>
+    <!-- Bottom geometric band -->
+    <g stroke="${c.trim}" stroke-width="1.2" fill="none" opacity="0.65">
+      <line x1="52" y1="245" x2="148" y2="245"/>
+      <path d="M58 245 L63 235 L68 245 L73 235 L78 245 L83 235 L88 245"/>
+      <path d="M112 245 L117 235 L122 245 L127 235 L132 245 L137 235 L142 245"/>
+      <line x1="52" y1="255" x2="148" y2="255"/>
+    </g>
+    <!-- Color stripe accents on skirt -->
+    <g opacity="0.3">
+      <line x1="68" y1="110" x2="62" y2="240" stroke="${c.trim}" stroke-width="2"/>
+      <line x1="132" y1="110" x2="138" y2="240" stroke="${c.trim}" stroke-width="2"/>
+    </g>
+  </svg>`;
+}
+
+function mlaya(c) {
+  return `<svg viewBox="0 0 200 300" class="dress-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ml${c.id}bg" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="${c.color2}" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="${c.color1}"/>
+      </radialGradient>
+    </defs>
+    <!-- Wide flowing body -->
+    <path d="M55 40 Q45 80 38 160 Q32 220 38 280 L162 280 Q168 220 162 160 Q155 80 145 40 Z" fill="url(#ml${c.id}bg)"/>
+    <!-- Draped effect -->
+    <path d="M55 40 Q70 100 65 280" stroke="rgba(255,255,255,0.08)" stroke-width="15" fill="none"/>
+    <path d="M145 40 Q130 100 135 280" stroke="rgba(255,255,255,0.05)" stroke-width="15" fill="none"/>
+    <!-- Neckline -->
+    <path d="M80 40 Q100 55 120 40" stroke="${c.trim}" stroke-width="2.5" fill="none"/>
+    <!-- Geometric Saharan motifs top -->
+    <g stroke="${c.trim}" fill="${c.trim}" opacity="0.85">
+      <polygon points="100,65 107,75 100,85 93,75" stroke-width="1"/>
+      <polygon points="100,68 105,75 100,82 95,75" fill="${c.color1}" stroke-width="0"/>
+      <circle cx="100" cy="75" r="2.5"/>
+      <path d="M90 75 L94 75 M106 75 L110 75" stroke-width="1.5"/>
+      <path d="M100 65 L100 61 M100 85 L100 89" stroke-width="1.5"/>
+    </g>
+    <!-- Repeating diamond pattern down center -->
+    <g stroke="${c.trim}" fill="none" stroke-width="0.8" opacity="0.5">
+      <path d="M96 100 L100 94 L104 100 L100 106 Z"/>
+      <path d="M96 118 L100 112 L104 118 L100 124 Z"/>
+      <path d="M96 136 L100 130 L104 136 L100 142 Z"/>
+      <path d="M96 154 L100 148 L104 154 L100 160 Z"/>
+      <path d="M96 172 L100 166 L104 172 L100 178 Z"/>
+      <path d="M96 190 L100 184 L104 190 L100 196 Z"/>
+    </g>
+    <!-- Border bands -->
+    <path d="M38 255 Q100 249 162 255" stroke="${c.trim}" stroke-width="3" fill="none"/>
+    <path d="M36 263 Q100 257 164 263" stroke="${c.trim}" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <!-- Side fringe suggestion -->
+    <g stroke="${c.trim}" stroke-width="0.8" opacity="0.4">
+      <line x1="38" y1="263" x2="36" y2="280"/><line x1="44" y1="263" x2="42" y2="280"/>
+      <line x1="50" y1="263" x2="48" y2="280"/><line x1="56" y1="263" x2="54" y2="280"/>
+      <line x1="144" y1="263" x2="146" y2="280"/><line x1="150" y1="263" x2="152" y2="280"/>
+      <line x1="156" y1="263" x2="158" y2="280"/><line x1="162" y1="263" x2="164" y2="280"/>
+    </g>
+  </svg>`;
+}
+
+function renderDresses(list) {
+  const grid = document.getElementById('dress-grid');
+  grid.innerHTML = list.map(d => {
+    const svgStr = d.cat === 'karakou' ? karaku(d) :
+                   d.cat === 'kaftan' ? kaftan(d) :
+                   d.cat === 'kabyle' ? kabyle(d) : mlaya(d);
+    return `<div class="dress-card" data-id="${d.id}">
+      <div class="dress-visual" style="background: linear-gradient(160deg, ${d.color1}, ${d.color2});">
+        ${d.new ? '<div class="badge-new">Nouveau</div>' : ''}
+        <div class="dress-3d" style="width:160px;height:280px;">
+          <div class="dress-inner">${svgStr}</div>
+        </div>
+      </div>
+      <div class="dress-info">
+        <div class="dress-name">${d.name}</div>
+        <div class="dress-origin">${d.origin}</div>
+        <div class="dress-price">
+          <div class="price-dzd">${d.price} <span>DZD</span></div>
+          <button class="add-btn" onclick="event.stopPropagation(); addToCart('${d.name}')">+ Panier</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.dress-card').forEach(el => {
+    el.addEventListener('click', () => openModal(parseInt(el.dataset.id)));
+  });
+}
+
+function filterDresses(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const list = cat === 'all' ? dresses : dresses.filter(d=>d.cat===cat);
+  renderDresses(list);
+}
+
+function renderBlogs() {
+  document.getElementById('blog-grid').innerHTML = blogs.map(b=>`
+    <div class="blog-card">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,${b.color},${b.accent});">
+        <svg viewBox="0 0 200 100" style="width:80%;opacity:0.3" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 80 Q60 20 100 50 Q140 80 180 30" stroke="white" stroke-width="2" fill="none"/>
+          <circle cx="60" cy="45" r="15" fill="white" opacity="0.3"/>
+          <rect x="110" y="30" width="50" height="30" rx="3" fill="white" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="blog-body">
+        <div class="blog-tag">${b.tag}</div>
+        <h3>${b.title}</h3>
+        <p>${b.excerpt}</p>
+        <div class="blog-meta">
+          <span>${b.date}</span>
+          <span>Lire · ${b.read}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(id) {
+  const d = dresses.find(x=>x.id===id);
+  if(!d) return;
+  const svgStr = d.cat==='karakou' ? karaku(d) : d.cat==='kaftan' ? kaftan(d) : d.cat==='kabyle' ? kabyle(d) : mlaya(d);
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-visual" style="background:linear-gradient(160deg,${d.color1},${d.color2});">
+      <div style="width:160px;height:280px;">${svgStr}</div>
+    </div>
+    <div class="modal-info">
+      <div class="modal-name">${d.name}</div>
+      <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem;">${d.origin} · ${d.cat.charAt(0).toUpperCase()+d.cat.slice(1)}</div>
+      <div class="modal-price">${d.price} <span>DZD</span></div>
+      <p class="modal-desc">${d.desc}</p>
+      <div class="size-picker">
+        <p>Taille</p>
+        <div class="sizes">${d.sizes.map((s,i)=>`<div class="size-tag${i===1?' active':''}" onclick="document.querySelectorAll('.size-tag').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${s}</div>`).join('')}</div>
+      </div>
+      <button class="btn-gold" style="width:100%;justify-content:center;display:block;padding:0.85rem;" onclick="addToCart('${d.name}');closeModal()">Ajouter au Panier</button>
+      <p style="font-size:0.72rem;text-align:center;margin-top:0.8rem;color:var(--text-muted);">Sur mesure disponible · Contactez-nous</p>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+function addToCart(name) {
+  cart++;
+  document.getElementById('cart-btn').textContent = '🛍 '+cart;
+  showToast('✦ Ajouté : ' + name);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+function showSection(id) {
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    a.classList.toggle('active', a.dataset.section===id);
+  });
+  window.scrollTo(0,0);
+}
+
+function toggleDark() {
+  const btn = document.getElementById('dark-toggle');
+  btn.classList.toggle('on');
+  document.documentElement.dataset.theme = btn.classList.contains('on') ? 'dark' : '';
+}
+
+function changeLang(val) {
+  showToast('Langue changée : ' + val.toUpperCase());
+}
+
+document.getElementById('modal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+
+renderDresses(dresses);
+renderBlogs();
+</script>
+</body>
+</html>
